@@ -819,5 +819,19 @@ function xmldb_enrol_lmb_upgrade($oldversion=0) {
         upgrade_plugin_savepoint(true, 2012060702, 'enrol', 'lmb');
     }
 
+    if ($oldversion < 2012060703) {
+        // Add the new customfield1 field.
+        $table = new xmldb_table('enrol_lmb_people');
+        $field = new xmldb_field('customfield1', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        
+        // Conditionally add customfield1.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        //LMB savepoint reached.
+        upgrade_plugin_savepoint(true, 2012060703, 'enrol', 'lmb');
+    }
+
     return $result;
 }
